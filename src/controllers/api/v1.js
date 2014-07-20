@@ -30,8 +30,9 @@ module.exports = function(express, MessageModel) {
 
     MessageModel.findById(req.params.messageId, function(err, mainMessage) {
       if (mainMessage == null) return res.status(404).json([]);
+      var limit = parseInt(req.query.limit) || 5;
 
-      mainMessage.siblings().done(function(siblings) {
+      mainMessage.siblings(limit).done(function(siblings) {
         res.json(siblings);
       });
     });

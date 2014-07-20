@@ -27,7 +27,7 @@ module.exports = function(Mongoose, Promise, async, baseRequire) {
       ], [], function(memo, query, callback) {
         query.limit(limit).toArray(function(err, messages) {
           messages.forEach(function(message) {
-            if (message._id !== originalMessage._id) memo.push(message);
+            if (message._id.toString() !== originalMessage._id.toString()) memo.push(message);
           });
 
           callback(null, memo);
