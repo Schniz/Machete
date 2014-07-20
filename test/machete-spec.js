@@ -40,6 +40,7 @@ describe("Machete API", function() {
           contents: lorem() + " @schniz, ya gever!!!",
           room: "main"
         }).save(function(err, lastMessage) {
+          mentionMessageId = lastMessage._id;
           numberOfMessagesCreated++;
           done();
         });
