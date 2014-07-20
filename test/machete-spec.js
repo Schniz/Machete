@@ -3,6 +3,7 @@ var expect = require('chai').expect;
 var lorem = require('lorem-ipsum');
 var async = require('async');
 require('simpleplan')();
+var mentionHelper = require('../src/helpers/mention-helper');
 
 describe("Machete API", function() {
   var server = require('../src/server');
@@ -21,6 +22,8 @@ describe("Machete API", function() {
   });
 
   describe("Messages", function(MessageModel) {
+    var numberOfMessagesCreated = 0;
+
     before(function(done) {
       async.times(20, function(n, next) {
         new MessageModel({
@@ -28,10 +31,18 @@ describe("Machete API", function() {
           contents: lorem(),
           room: "main"
         }).save(function(err, data) {
+          numberOfMessagesCreated++;
           next();
         });
       }, function() {
-        done();
+        new MessageModel({
+          sentAt: Date.now(),
+          contents: lorem() + " @schniz, ya gever!!!",
+          room: "main"
+        }).save(function(err, lastMessage) {
+          numberOfMessagesCreated++;
+          done();
+        });
       });
     });
 
@@ -44,7 +55,7 @@ describe("Machete API", function() {
     it("should give a list of messages", function(done) {
       request("http://localhost:" + port + "/api/v1/messages/", function(err, res, body) {
         expect(res.statusCode).to.be.equal(200);
-        expect(JSON.parse(body).length).to.be.equal(20);
+        expect(JSON.parse(body).length).to.be.equal(numberOfMessagesCreated);
         done();
       });
     });
@@ -70,6 +81,25 @@ describe("Machete API", function() {
 
           done();
         });
+      });
+    });
+
+    it("should get a list of mentions from string", function() {
+      expect(mentionHelper("hello world")).to.deep.equal([]);
+      expect(mentionHelper("what is up @schniz")).to.deep.equal(['schniz']);
+      expect(mentionHelper("@schniz@schniz")).to.deep.equal(['schniz']);
+      expect(mentionHelper("@schniz @schniz")).to.deep.equal(['schniz']);
+      expect(mentionHelper("@schniz!")).to.deep.equal(['schniz']);
+      expect(mentionHelper("hello world@schniz")).to.deep.equal([]);
+    });
+
+    it("should get the list of the mentions from the message contents", function(done) {
+      MessageModel.find(function(err, messages) {
+        messages.forEach(function(message) {
+          expect(message.mentions()).to.deep.equal(mentionHelper(message.contents));
+        });
+
+        done();
       });
     });
   }.inject());

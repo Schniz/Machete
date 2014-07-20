@@ -1,6 +1,8 @@
 require('simpleplan')();
 
-module.exports = function(Mongoose, Promise, async) {
+module.exports = function(Mongoose, Promise, async, baseRequire) {
+  var mentionsFromString = baseRequire('helpers/mention-helper');
+  
   var messageSchema = new Mongoose.Schema({
     sentAt: Date,
     contents: String,
@@ -9,7 +11,7 @@ module.exports = function(Mongoose, Promise, async) {
   });
 
   messageSchema.methods.mentions = function() {
-    throw new Error("to be implemented...");
+    return mentionsFromString(this.contents);
   };
 
   messageSchema.methods.siblings = function(limit) {
