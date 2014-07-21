@@ -1,3 +1,5 @@
+require('coffee-react/register');
+
 var sp = require('simpleplan')();
 var Mongoose = sp.register('Mongoose', require('mongoose'));
 var express = sp.register('express', require('express'));
@@ -13,6 +15,7 @@ var baseRequire = sp.register('baseRequire', function(path) {
 sp.register("MessageModel", baseRequire('models/message')());
 
 app.use("/api/v1", baseRequire('controllers/api/v1')());
+app.use(express.static(__dirname + "/../public/"));
 
 http.start = function(mongoUrl) {
   var args = [].slice.call(arguments, 1);
