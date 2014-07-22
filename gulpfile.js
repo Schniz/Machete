@@ -12,7 +12,7 @@ gulpJson.tasks.forEach(function(task) {
 });
 
 gulp.task('default', ['build', 'run'], function() {
-}).task('run', ['build'], function() {
+}).task('run', ['build:watch'], function() {
   require(__dirname + '/index');
 }).task('watch', ['build:watch'], function() {
   return nodemon({

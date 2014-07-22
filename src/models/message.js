@@ -20,19 +20,21 @@ module.exports = function(Mongoose, Promise, async, baseRequire) {
     var collection = this.collection;
     var originalMessage = this;
 
-    return new Promise(function(resolve, reject) {
-      async.reduce([
-        collection.find({ sentAt: { $lte: originalMessage.sentAt }, room: originalMessage.room }).sort({ sentAt: -1 }),
-        collection.find({ sentAt: { $gte: originalMessage.sentAt }, room: originalMessage.room }).sort({ sentAt: 1 })
-      ], [], function(memo, query, callback) {
-        query.limit(limit).toArray(function(err, messages) {
-          messages.forEach(function(message) {
-            if (message._id.toString() !== originalMessage._id.toString()) memo.push(message);
-          });
-
-          callback(null, memo);
+    var createCollectionFromQueryCallback = function(memo, query, callback) {
+      return query.limit(limit).toArray(function(err, messages) {
+        messages.forEach(function(message) {
+          if (message._id.toString() !== originalMessage._id.toString()) memo.push(message);
         });
-      }, function(err, results) {
+
+        return callback(null, memo);
+      });
+    };
+
+    var beforeQuery = collection.find({ sentAt: { $lte: originalMessage.sentAt }, room: originalMessage.room }).sort({ sentAt: -1 });
+    var afterQuery = collection.find({ sentAt: { $gte: originalMessage.sentAt }, room: originalMessage.room }).sort({ sentAt: 1 });
+
+    return new Promise(function(resolve, reject) {
+      async.reduce([beforeQuery, afterQuery], [], createCollectionFromQueryCallback, function(err, results) {
         results.push(originalMessage);
         results.sort(function(a,b) {
           return b.sentAt - a.sentAt;
@@ -40,7 +42,7 @@ module.exports = function(Mongoose, Promise, async, baseRequire) {
 
         resolve(results);
       });
-    })
+    });
   };
 
   return Mongoose.model('Message', messageSchema);

@@ -4,6 +4,8 @@ React = require('react')
 
 Wat = React.createClass
   render: ->
-    <div>{@props.name}</div>
+    <div>Hey, {@props.name}</div>
+  componentDidMount: ->
+    console.log "WAT"
 
 module.exports = Wat

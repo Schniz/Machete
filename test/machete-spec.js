@@ -77,8 +77,8 @@ describe("Machete API", function() {
         var messageIndex = Math.round(messages.length / 2);
         var message = messages[messageIndex];
 
-        message.siblings(5).done(function(siblings) {
-          expect(siblings.length).to.equal(11);
+        message.siblings(1).done(function(siblings) {
+          expect(siblings.length).to.equal(3);
 
           done();
         });
