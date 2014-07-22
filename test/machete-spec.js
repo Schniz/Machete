@@ -10,13 +10,19 @@ describe("Machete API", function() {
   var port = process.env.PORT || 8088;
 
   before(function(done) {
-    server.start('mongodb://localhost/machete2testspec', port, 'localhost', function() {
+    var mongoUrl = 'mongodb://localhost/machete_testspec_' + new Date().getTime();
+    server.start(mongoUrl, port, 'localhost', function() {
       done();
     });
   });
 
   after(function(done) {
     server.close(function() {
+      // Drops the temporary db
+      (function(Mongoose) {
+        Mongoose.connection.db.dropDatabase();
+      }.inject())();
+
       done();
     });
   });
@@ -87,7 +93,7 @@ describe("Machete API", function() {
           results.forEach(function(result) {
             expect(result.result).to.be.equal(result.count * 2 + 1);
           });
-          
+
           done();
         });
       });
