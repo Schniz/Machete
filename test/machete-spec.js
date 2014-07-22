@@ -3,7 +3,7 @@ var expect = require('chai').expect;
 var lorem = require('lorem-ipsum');
 var async = require('async');
 require('simpleplan')();
-var mentionHelper = require('../src/helpers/mention-helper');
+var mentionHelper = require('../src/client-server/mention-helper');
 
 describe("Machete API", function() {
   var server = require('../src/server');

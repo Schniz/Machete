@@ -1,7 +1,7 @@
 require('simpleplan')();
 
 module.exports = function(Mongoose, Promise, async, baseRequire) {
-  var mentionsFromString = baseRequire('helpers/mention-helper');
+  var mentionsFromString = baseRequire('client-server/mention-helper');
   
   var messageSchema = new Mongoose.Schema({
     sentAt: Date,
