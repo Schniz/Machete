@@ -1,6 +1,7 @@
 require('coffee-react/register');
 
 var sp = require('simpleplan')();
+var _ = sp.register('_', require('lodash'));
 var Mongoose = sp.register('Mongoose', require('mongoose'));
 var express = sp.register('express', require('express'));
 var app = sp.register('app', express());

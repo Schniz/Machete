@@ -1,6 +1,6 @@
 require('simpleplan')();
 
-module.exports = function(Mongoose, Promise, async, baseRequire) {
+module.exports = function(_, Mongoose, Promise, async, baseRequire) {
   var mentionsFromString = baseRequire('client-server/mention-helper');
   
   var messageSchema = new Mongoose.Schema({
@@ -30,8 +30,13 @@ module.exports = function(Mongoose, Promise, async, baseRequire) {
       });
     };
 
-    var beforeQuery = collection.find({ _id: { $ne: originalMessage._id }, sentAt: { $lte: originalMessage.sentAt }, room: originalMessage.room }).sort({ sentAt: -1 });
-    var afterQuery = collection.find({ _id: { $ne: originalMessage._id }, sentAt: { $gte: originalMessage.sentAt }, room: originalMessage.room }).sort({ sentAt: 1 });
+    var baseQuery = {
+      _id: { $ne: originalMessage._id },
+      room: originalMessage.room
+    };
+
+    var beforeQuery = collection.find(_.extend(baseQuery, { sentAt: { $lte: originalMessage.sentAt } })).sort({ sentAt: -1 });
+    var afterQuery = collection.find(_.extend(baseQuery, { sentAt: { $gte: originalMessage.sentAt } })).sort({ sentAt: 1 });
 
     return new Promise(function(resolve, reject) {
       async.reduce([beforeQuery, afterQuery], [], createCollectionFromQueryCallback, function(err, results) {
