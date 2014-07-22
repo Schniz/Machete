@@ -21,7 +21,8 @@ React Hirarchy
             - Message..
             - Message
     - ChatTextBox
-
+      - AtJsTextBox(:emoji: + @mentions)
+      - SendButton(also via Enter Key)
 Url Hirarchy
 ------------
 - `/` => `/main`
