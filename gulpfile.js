@@ -4,8 +4,12 @@ var cjsx = require('gulp-cjsx');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('coffee-reactify')
+var gulpJson = require('./package.json').gulp;
 
-var buildTask = require('./tasks/build');
+// Load the tasks
+gulpJson.tasks.forEach(function(task) {
+  require("./tasks/" + task);
+});
 
 gulp.task('default', ['build', 'run'], function() {
 }).task('run', ['build'], function() {
