@@ -1,5 +1,7 @@
+var Stream = require("stream");
 var source = require('vinyl-source-stream');
 var gulp = require('gulp');
+var rename = require('gulp-rename');
 var gutil = require('gulp-util');
 var browserify = require('browserify');
 var reactify = require('coffee-reactify');
@@ -7,9 +9,11 @@ var watchify = require('watchify');
 var notify = require("gulp-notify");
 var scriptsDir = './src/client-server';
 var buildDir = './public/scripts/common';
+var packageJson = require(__dirname + '/../package.json');
 
-var buildExternals = ['react']; 
- 
+var gulpConfig = packageJson.gulp.config;
+var transformToJsRegex = RegExp(".(" + gulpConfig.transformToJsExtension.join('|') + ")$");
+
 function handleErrors() {
   var args = Array.prototype.slice.call(arguments);
   notify.onError({
@@ -31,15 +35,20 @@ function buildScript(file, watch, externals) {
   var bundler = watch ? watchify(props) : browserify(props);
 
   var externalOrRequire = externals ? bundler.require : bundler.external;
-  buildExternals.forEach(function(buildExternal) {
+  gulpConfig.buildExternals.forEach(function(buildExternal) {
     externalOrRequire.call(bundler, buildExternal);
   });
 
   bundler.transform(reactify);
   
   function rebundle() {
-    var stream = bundler.bundle({debug: true});
-    return stream.on('error', handleErrors).pipe(source(file)).pipe(gulp.dest(buildDir + '/'));
+    var stream = bundler.bundle({debug: true}).on('error', handleErrors).pipe(source(file));
+
+    if (file.match(transformToJsRegex)) {
+      stream = stream.pipe(rename({ extname: '.js' }));
+    }
+
+    return stream.pipe(gulp.dest(buildDir + '/'));
   }
 
   bundler.on('update', function() {

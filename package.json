@@ -6,6 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "gulp": {
+    "tasks": ["build"],
+    "config": {
+      "buildExternals": ["react"],
+      "transformToJsExtension": ["cjsx"]
+    }
+  },
+
   "author": "Gal Schlezinger <gal@spitfire.co.il> (https://github.com/Schniz)",
   "license": "MIT",
   "dependencies": {
@@ -20,6 +28,7 @@
     "gulp-cjsx": "^0.2.0",
     "gulp-nodemon": "^1.0.4",
     "gulp-notify": "^1.4.0",
+    "gulp-rename": "^1.2.0",
     "gulp-util": "^3.0.0",
     "mongoose": "^3.8.13",
     "promise": "^5.0.0",

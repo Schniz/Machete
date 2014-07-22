@@ -11,12 +11,11 @@ gulp.task('default', ['build', 'run'], function() {
 }).task('run', ['build'], function() {
   require(__dirname + '/index');
 }).task('watch', ['build:watch'], function() {
-  nodemon({
+  return nodemon({
     script: 'index.js',
     ext: 'js',
     ignore: ['./public/**'] 
   }).on('restart', function () {
     console.log('restarted!')
   });
-  // gulp.watch("./src/client-server/**/*", ['build']);
 });
