@@ -76,10 +76,18 @@ describe("Machete API", function() {
       MessageModel.find(function(err, messages) {
         var messageIndex = Math.round(messages.length / 2);
         var message = messages[messageIndex];
+        var numberOfSiblingsToFetch = [1, 2, 3, 4, 5, 6];
 
-        message.siblings(1).done(function(siblings) {
-          expect(siblings.length).to.equal(3);
-
+        async.map(numberOfSiblingsToFetch, function(count, callback) {
+          message.siblings(count).done(function(siblings) {
+            expect(siblings).to.be.an('array');
+            callback(null, { count: count, result: siblings.length });
+          });
+        }, function(err, results) {
+          results.forEach(function(result) {
+            expect(result.result).to.be.equal(result.count * 2 + 1);
+          });
+          
           done();
         });
       });

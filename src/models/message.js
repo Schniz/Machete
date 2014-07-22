@@ -23,15 +23,15 @@ module.exports = function(Mongoose, Promise, async, baseRequire) {
     var createCollectionFromQueryCallback = function(memo, query, callback) {
       return query.limit(limit).toArray(function(err, messages) {
         messages.forEach(function(message) {
-          if (message._id.toString() !== originalMessage._id.toString()) memo.push(message);
+          return memo.push(message);
         });
 
         return callback(null, memo);
       });
     };
 
-    var beforeQuery = collection.find({ sentAt: { $lte: originalMessage.sentAt }, room: originalMessage.room }).sort({ sentAt: -1 });
-    var afterQuery = collection.find({ sentAt: { $gte: originalMessage.sentAt }, room: originalMessage.room }).sort({ sentAt: 1 });
+    var beforeQuery = collection.find({ _id: { $ne: originalMessage._id }, sentAt: { $lte: originalMessage.sentAt }, room: originalMessage.room }).sort({ sentAt: -1 });
+    var afterQuery = collection.find({ _id: { $ne: originalMessage._id }, sentAt: { $gte: originalMessage.sentAt }, room: originalMessage.room }).sort({ sentAt: 1 });
 
     return new Promise(function(resolve, reject) {
       async.reduce([beforeQuery, afterQuery], [], createCollectionFromQueryCallback, function(err, results) {
