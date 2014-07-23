@@ -1,19 +1,26 @@
 window.Helpers = require('../client/helpers.cjsx')
 
-MessagesBySender = require('./messages-by-sender.cjsx')
+ChatTab = require('./chat-tab.cjsx')
 
 React = require('react')
-
-user =
-  profilePic: '/images/gal.jpg'
-  nickname: 'schniz'
 
 messages = [
   {
     _id: 'abcdefg'
     contents: "Gal Hagever haya po!"
     sentAt: new Date()
+    user:
+      profilePic: '/images/gal.jpg'
+      nickname: 'schniz'
+  }
+  {
+    _id: 'abcdefg2'
+    contents: "Gal Hagever haya po 2222222!"
+    sentAt: new Date()
+    user:
+      profilePic: '/images/gal.jpg'
+      nickname: 'schniz'
   }
 ]
 
-React.renderComponent <MessagesBySender user={ user } messages={ messages } />, document.body
+React.renderComponent <ChatTab messages={ messages } />, document.body

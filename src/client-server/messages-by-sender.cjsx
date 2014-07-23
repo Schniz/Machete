@@ -2,7 +2,6 @@
 
 React = require('react')
 
-ChatMessageUserHolder = require('./chatmessage-user-holder.cjsx')
 ChatMessageProfilePic = require('./chatmessage-profile-pic.cjsx')
 ChatMessage = require('./chatmessage.cjsx')
 
