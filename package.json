@@ -15,7 +15,8 @@
       "buildExternals": [
         "react",
         "lodash",
-        "moment"
+        "moment",
+        "jquery"
       ],
       "transformToJsExtension": [
         "cjsx"
@@ -25,6 +26,7 @@
   "author": "Gal Schlezinger <gal@spitfire.co.il> (https://github.com/Schniz)",
   "license": "MIT",
   "dependencies": {
+    "ExpandingTextareas": "git://github.com/bgrins/ExpandingTextareas",
     "async": "^0.9.0",
     "body-parser": "^1.4.3",
     "browserify": "^4.2.3",
@@ -40,6 +42,7 @@
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^0.7.2",
     "gulp-util": "^3.0.0",
+    "jquery": "^2.1.1",
     "lodash": "^2.4.1",
     "moment": "^2.7.0",
     "mongoose": "^3.8.13",
