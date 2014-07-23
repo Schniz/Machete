@@ -63,7 +63,7 @@ function buildScript(file, watch, externals) {
 gulp.task('build:cjsx', function() {
   return buildScript('client.cjsx', false);
 }).task('build:lib', function() {
-  buildScript("lib.js", false, true);
+  return buildScript("lib.js", false, true);
 }).task('build:sass', function() {
   return gulp.src('./src/sass/**/main.scss')
     .pipe(sass()).on('error', handleErrors)

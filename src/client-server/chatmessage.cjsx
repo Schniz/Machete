@@ -27,7 +27,7 @@ ChatMessage = React.createClass
 
   render: ->
     <li className="chatmessage">
-      <span className="contents">{ @props.contents }</span>
+      <span dir="auto" className="contents">{ @props.contents }</span>
       { @generatePermalink() }
     </li>
 

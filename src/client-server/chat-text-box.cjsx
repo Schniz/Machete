@@ -21,9 +21,8 @@ ChatTextBox = React.createClass
 
   render: ->
     <div className="chat-text-box">
-      <textarea ref="textarea" onKeyDown={ @onKeyDown } className="textarea" rows="1" placeholder="Free your mind...">
+      <textarea dir="auto" ref="textarea" onKeyDown={ @onKeyDown } className="textarea" rows="1" placeholder="Free your mind...">
       </textarea>
-      <button className="send-button" onClick={ @onSubmit }>Send</button>
     </div>
 
 module.exports = ChatTextBox
