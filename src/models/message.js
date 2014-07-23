@@ -14,6 +14,32 @@ module.exports = function(_, Mongoose, Promise, async, baseRequire) {
     return mentionsFromString(this.contents);
   };
 
+  messageSchema.methods._beforeAfter = function(isBefore, limit) {
+    limit = limit || 5;
+    var sentAtQuery = {};
+    sentAtQuery[isBefore ? "$lte" : "$gte"] = this.sentAt;
+
+    var query = {
+      _id: { $ne: this._id },
+      room: this.room,
+      sentAt: sentAtQuery
+    };
+
+    var numericalIsBefore = isBefore ? -1 : 1;
+
+    return this.collection.find(query).sort({ sentAt: numericalIsBefore }).limit(limit);
+  };
+
+  messageSchema.methods.before = function() {
+    var args = [true].concat([].slice.call(arguments));
+    return this._beforeAfter.apply(this, args);
+  };
+
+  messageSchema.methods.after = function() {
+    var args = [true].concat([].slice.call(arguments));
+    return this._beforeAfter.apply(this, args);
+  };
+
   messageSchema.methods.siblings = function(limit) {
     limit = limit || 5; // mikol tzad
     var siblings = [];
@@ -21,7 +47,7 @@ module.exports = function(_, Mongoose, Promise, async, baseRequire) {
     var originalMessage = this;
 
     var createCollectionFromQueryCallback = function(memo, query, callback) {
-      return query.limit(limit).toArray(function(err, messages) {
+      return query.toArray(function(err, messages) {
         messages.forEach(function(message) {
           return memo.push(message);
         });
@@ -30,16 +56,8 @@ module.exports = function(_, Mongoose, Promise, async, baseRequire) {
       });
     };
 
-    var baseQuery = {
-      _id: { $ne: originalMessage._id },
-      room: originalMessage.room
-    };
-
-    var beforeQuery = collection.find(_.extend(baseQuery, { sentAt: { $lte: originalMessage.sentAt } })).sort({ sentAt: -1 });
-    var afterQuery = collection.find(_.extend(baseQuery, { sentAt: { $gte: originalMessage.sentAt } })).sort({ sentAt: 1 });
-
     return new Promise(function(resolve, reject) {
-      async.reduce([beforeQuery, afterQuery], [], createCollectionFromQueryCallback, function(err, results) {
+      async.reduce([originalMessage.before(limit), originalMessage.after(limit)], [], createCollectionFromQueryCallback, function(err, results) {
         results.push(originalMessage);
         results.sort(function(a,b) {
           return b.sentAt - a.sentAt;
