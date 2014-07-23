@@ -17,11 +17,8 @@ MessagesBySender = React.createClass
     messages.push message
     @setState messages: messages
 
-  addMessageWat: ->
-    @addMessage sentAt: new Date, contents: prompt('wat', 'wat'), _id: Math.random()
-
   render: ->
-    <li className="messages-by-sender" onClick={@addMessageWat}>
+    <li className="messages-by-sender">
       <ChatMessageProfilePic src={ @props.user.profilePic } />
       <div className="messages-container">
         <span className="sender">{ @props.user.nickname }:</span>
