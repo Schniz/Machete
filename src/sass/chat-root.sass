@@ -1,0 +1,32 @@
+.chat-root
+  display: flex
+  flex-direction: column
+  height: 100%
+  width: 100%
+
+.chat-tabs
+  flex: 1
+
+.chat-text-box
+  border-top: 1px solid rgba(0,0,0,0.3)
+  box-shadow: -1px -1px 2px rgba(0,0,0,0.1)
+  display: flex
+  min-height: 1em
+
+  .textarea
+    flex: 1
+    font-family: $fontFamily
+    margin: 0
+    border: 0
+    padding: 0.6em 1.3em
+    min-height: 1em
+    height: 1.4em
+    resize: none
+    max-height: 1.4em * 4;
+
+  .send-button
+    border: 0
+
+
+.expanding-wrapper
+  flex: 1

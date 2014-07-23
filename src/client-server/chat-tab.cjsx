@@ -8,6 +8,9 @@ ChatTab = React.createClass
   getInitialState: ->
     userMessages: @messagesToUserMessages(@props.messages)
 
+  addMessage: (message) ->
+    @setState userMessages: @handleMessage(@state.userMessages, message)
+
   extractMessage: (message) ->
     user: message.user
     contents: 
@@ -37,7 +40,7 @@ ChatTab = React.createClass
     <MessagesBySender key={ userKey } user={ userMessages.user } messages={ userMessages.messages } />
 
   render: ->
-    <ol>
+    <ol className="chat-tab">
       { @state.userMessages.map(@generateUserMessages) }
     </ol>
 
