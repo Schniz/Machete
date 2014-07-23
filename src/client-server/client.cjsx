@@ -1,5 +1,19 @@
-window.Helpers = require '../client/helpers.cjsx'
-Wat = require './wat.cjsx'
-React = require 'react'
+window.Helpers = require('../client/helpers.cjsx')
 
-React.renderComponent <Wat name="Gal" />, document.body
+MessagesBySender = require('./messages-by-sender.cjsx')
+
+React = require('react')
+
+user =
+  profilePic: '/images/gal.jpg'
+  nickname: 'schniz'
+
+messages = [
+  {
+    _id: 'abcdefg'
+    contents: "Gal Hagever haya po!"
+    sentAt: new Date()
+  }
+]
+
+React.renderComponent <MessagesBySender user={ user } messages={ messages } />, document.body

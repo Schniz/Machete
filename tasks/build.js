@@ -10,6 +10,8 @@ var notify = require("gulp-notify");
 var scriptsDir = './src/client-server';
 var buildDir = './public/scripts/common';
 var packageJson = require(__dirname + '/../package.json');
+var sass = require('gulp-sass');
+var prefix = require('gulp-autoprefixer');
 
 var gulpConfig = packageJson.gulp.config;
 var transformToJsRegex = RegExp(".(" + gulpConfig.transformToJsExtension.join('|') + ")$");
@@ -62,7 +64,15 @@ gulp.task('build:cjsx', function() {
   return buildScript('client.cjsx', false);
 }).task('build:lib', function() {
   buildScript("lib.js", false, true);
-}).task('build', ['build:lib', 'build:cjsx'], function() {
+}).task('build:sass', function() {
+  return gulp.src('./src/sass/**/main.scss')
+    .pipe(sass()).on('error', handleErrors)
+    .pipe(prefix("last 1 version", "> 1%", "ie 8", "ie 7"))
+    .pipe(gulp.dest('./public/style/'));
+}).task('build', ['build:lib', 'build:cjsx', 'build:sass'], function() {
 }).task('build:watch', ['build'], function() {
-  return buildScript('client.cjsx', true);
+  gulp.watch('./src/sass/**/*', ['build:sass']);
+  gulp.watch('./src/client-server/**/*.cjsx', ['build:cjsx']);
+  gulp.watch('./src/client-server/**/lib.js', ['build:lib']);
+  return buildScript('client.cjsx', false);
 });
