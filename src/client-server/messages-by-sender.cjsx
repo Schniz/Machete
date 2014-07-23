@@ -19,9 +19,9 @@ MessagesBySender = React.createClass
 
   render: ->
     <li className="messages-by-sender">
-      <ChatMessageProfilePic src={ @props.user.profilePic } />
+      <ChatMessageProfilePic nickname={ @props.user } />
       <div className="messages-container">
-        <span className="sender">{ @props.user.nickname }:</span>
+        <span className="sender">{ @props.user }:</span>
         <ol className="chatmessages">
           { @state.messages.map(@messageContainer) }
         </ol>

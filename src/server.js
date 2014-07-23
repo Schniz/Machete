@@ -16,6 +16,7 @@ var baseInject = sp.register('baseInject', function baseInject(path) {
 });
 
 // Models
+sp.register("UserModel", baseInject('models/user'));
 sp.register("MessageModel", baseInject('models/message'));
 
 app.use("/api/v1", baseInject('controllers/api/v1'));

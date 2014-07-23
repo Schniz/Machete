@@ -17,10 +17,10 @@ ChatTab = React.createClass
  
   handleMessage: (userMessages, message) ->
     lastUserMessages = userMessages[userMessages.length - 1]
-    lastUser = lastUserMessages?.user?.nickname
+    lastUser = lastUserMessages?.user
     messageContents = @extractMessage message
 
-    if message.user.nickname is lastUser
+    if message.user is lastUser
       lastUserMessages.messages.push messageContents.contents
     else
       userMessages.push

@@ -1,6 +1,6 @@
 require('simpleplan')();
 
-module.exports = function(express, MessageModel) {
+module.exports = function(express, MessageModel, UserModel) {
   var api = express();
 
   api.get("/", function(req, res) {
@@ -36,7 +36,17 @@ module.exports = function(express, MessageModel) {
         res.json(siblings);
       });
     });
+  });
 
+  api.get("/users/:nickname/picture", function(req, res, next) {
+    UserModel.findOne({ nickname: req.params.nickname }, function(err, user) {
+      if (err) next(err);
+      if (!user) return res.status(404).send("not found.");
+
+      console.warn("TODO: edit /users/:nickname/picture");
+
+      return res.redirect("/images/gal.jpg");
+    });
   });
 
   return api;
