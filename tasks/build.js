@@ -72,7 +72,7 @@ gulp.task('build:cjsx', function() {
 }).task('build', ['build:lib', 'build:cjsx', 'build:sass'], function() {
 }).task('build:watch', ['build'], function() {
   gulp.watch('./src/sass/**/*', ['build:sass']);
-  gulp.watch('./src/client-server/**/*.cjsx', ['build:cjsx']);
-  gulp.watch('./src/client-server/**/lib.js', ['build:lib']);
+  gulp.watch('./src/client-server/**/*', ['build:cjsx']);
+  gulp.watch('./src/client-server/**/*', ['build:lib']);
   return buildScript('client.cjsx', false);
 });

@@ -1,6 +1,7 @@
 # @cjsx React.DOM
 
 React = require('react')
+moment = require('moment')
 
 MessagesBySender = require('./messages-by-sender.cjsx')
 
@@ -18,12 +19,15 @@ ChatTab = React.createClass
       sentAt: message.sentAt
       _id: message._id
  
+  shouldCreateNewUserMessage: (message) ->
+    moment(message.sentAt).diff(new Date(), 'seconds') > 5
+
   handleMessage: (userMessages, message) ->
     lastUserMessages = userMessages[userMessages.length - 1]
     lastUser = lastUserMessages?.user
     messageContents = @extractMessage message
 
-    if message.user is lastUser
+    if message.user is lastUser and not @shouldCreateNewUserMessage(message)
       lastUserMessages.messages.push messageContents.contents
     else
       userMessages.push
@@ -38,6 +42,13 @@ ChatTab = React.createClass
   generateUserMessages: (userMessages) ->
     userKey = "#{userMessages.user}@#{userMessages.messages[0].sentAt.getTime()}"
     <MessagesBySender key={ userKey } user={ userMessages.user } messages={ userMessages.messages } />
+
+  scrollToBottom: ->
+    node = @getDOMNode()
+    node.scrollTop = node.scrollHeight
+
+  componentDidMount: ->
+    @scrollToBottom()
 
   render: ->
     <ol className="chat-tab">

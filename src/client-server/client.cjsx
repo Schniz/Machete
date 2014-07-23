@@ -21,4 +21,11 @@ tabs =
       }
     ]
 
+[3..10].forEach (id)->
+  tabs.main.messages.push
+    _id: id
+    contents: "Gal Hagever haya po #{id}!"
+    sentAt: new Date()
+    user: 'schniz'
+
 React.renderComponent <ChatRoot tabs={ tabs } />, document.body

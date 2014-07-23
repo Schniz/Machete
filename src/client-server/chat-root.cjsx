@@ -5,12 +5,12 @@ ChatTabs = require('./chat-tabs.cjsx')
 ChatTextBox = require('./chat-text-box.cjsx')
 
 ChatRoot = React.createClass
-  sendToCurrentChatTab: (text) ->
-    console.log text
+  sendToCurrentChatTab: (text, callback) ->
+    @refs.chatTabs.sendToCurrentChatTab text, callback
 
   render: ->
     <div className="chat-root">
-      <ChatTabs tabs={@props.tabs} />
+      <ChatTabs ref="chatTabs" tabs={@props.tabs} />
       <ChatTextBox onSubmit={@sendToCurrentChatTab} />
     </div>
 
