@@ -8,6 +8,9 @@ ChatMessage = React.createClass
   mixins: [
     SetIntervalMixin
   ]
+  getInitialState: ->
+    timeAgo: @timeAgo()
+    isActive: false
 
   permalinkClick: (e) ->
     e.preventDefault()
@@ -15,18 +18,24 @@ ChatMessage = React.createClass
   updateTimeAgo: ->
     @setState timeAgo: @timeAgo()
 
-  getInitialState: ->
-    timeAgo: @timeAgo()
-
   generatePermalink: ->
     link = "/messages/#{ @props.id }"
-    <time className="time"><a href={ link } onClick={ @permalinkClick } className="permalink">{ @state.timeAgo }</a></time> if @props.isLast
+    <time className="time"><a href={ link } onClick={ @permalinkClick } className="permalink">{ @state.timeAgo }</a></time> if @props.isLast or @state.isActive
 
   timeAgo: ->
     moment(@props.sentAt).fromNow()
 
+  setActive: ->
+    @setState isActive: true
+
+  setInactive: ->
+    @setState isActive: false
+
+  toggleActive: ->
+    @setState isActive: not @state.isActive
+
   render: ->
-    <li className="chatmessage">
+    <li className="chatmessage" onMouseLeave={ @setInactive } onDoubleClick={ @toggleActive }>
       <span dir="auto" className="contents">{ @props.contents }</span>
       { @generatePermalink() }
     </li>

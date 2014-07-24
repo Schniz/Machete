@@ -20,14 +20,15 @@ ChatTab = React.createClass
       _id: message._id
  
   shouldCreateNewUserMessage: (message) ->
-    moment(message.sentAt).diff(new Date(), 'seconds') > 5
+    timeDiffInSeconds = moment(new Date()).diff(moment(message.sentAt), 'minutes') > 1
 
   handleMessage: (userMessages, message) ->
     lastUserMessages = userMessages[userMessages.length - 1]
+    lastUserMessage = lastUserMessages?.messages[lastUserMessages.messages?.length - 1]
     lastUser = lastUserMessages?.user
     messageContents = @extractMessage message
 
-    if message.user is lastUser and not @shouldCreateNewUserMessage(message)
+    if message.user is lastUser and not @shouldCreateNewUserMessage(lastUserMessage)
       lastUserMessages.messages.push messageContents.contents
     else
       userMessages.push
