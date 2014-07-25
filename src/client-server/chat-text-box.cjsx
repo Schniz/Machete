@@ -1,18 +1,14 @@
 # @cjsx React.DOM
 
-React = require('react')
+React = require('react/addons')
 $ = require('jquery');
 
 ChatTextBox = React.createClass
   componentDidMount: ->
-    $(@refs.textarea.getDOMNode()).expanding()
+    $(@refs.textarea.getDOMNode()).expanding().focus()
 
-  onSubmit: ->
-    textarea = @refs.textarea.getDOMNode()
-    value = textarea.value
-
-    @props.onSubmit value, (err) ->
-      $(textarea).val("").change() unless err
+  onSubmit: -> @props.onSubmit @refs.textarea.getDOMNode().value
+  clear: -> $(@refs.textarea.getDOMNode()).val("").change()
 
   onKeyDown: (evnt) ->
     if (evnt.key is 'Enter' and not evnt.shiftKey)

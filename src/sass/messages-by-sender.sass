@@ -5,6 +5,9 @@
   border-bottom: 1px dashed rgba(0,0,0,.2)
   padding: 1em 0
 
+  &.reached-bottom
+    position: relative
+
 .messages-container
   display: block
   width: 100%
@@ -29,3 +32,24 @@
   border: 0.15em dashed rgba(0,0,0,0.2)
   padding: 0.15em
   margin: 1em
+
+.sticky-chatmessage-header
+  visibility: hidden
+  display: block
+  // position: fixed
+  position: absolute
+  background-color: rgba(247, 247, 247, 0.9)
+  font-weight: bold
+  width: 100vw
+  padding: 0.2em 0
+  text-align: center
+  top: 0
+
+  &.active
+    visibility: visible
+
+    &.reached-bottom
+      // width: 100%
+      // position: absolute
+      bottom: 0
+      top: initial

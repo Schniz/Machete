@@ -1,21 +1,29 @@
 # @cjsx React.DOM
 
-React = require('react')
+React = require('react/addons')
 ChatTab = require('./chat-tab.cjsx')
 
 ChatTabs = React.createClass
-  sendToCurrentChatTab: (text, callback) ->
-    @refs.chatTab.addMessage
-      contents: text
-      user: 'schniz'
-      sentAt: new Date()
-      _id: Math.random() * 1000000
+  getInitialState: ->
+    currentTab: 'main'
 
-    callback()
+  addMessageToTab: (opts)->
+    { message, tab } = opts
+    @refs.chatTab.addMessage message
+
+  getTab: (tab) ->
+    @refs.chatTab
+
+  updateTemporaryMessageOnTab: (opts)->
+      { tab, oldId, newId, ok } = opts
+      if ok
+        @getTab(tab).changeMessageId from: oldId, to: newId
+      else
+        @getTab(tab).errorOnMessage oldId
 
   render: ->
     <div className="chat-tabs">
-      <ChatTab ref="chatTab" messages={@props.tabs.main.messages} />
+      <ChatTab name="main" ref="chatTab" messages={@props.tabs.main.messages} />
     </div>
 
 module.exports = ChatTabs

@@ -1,29 +1,45 @@
 # @cjsx React.DOM
 
-React = require('react')
+React = require('react/addons')
 moment = require('moment')
 SetIntervalMixin = require('./set-interval-mixin.cjsx')
 
-ChatMessage = React.createClass
+ChatMessageContents = React.createClass
+  shouldComponentUpdate: -> no
+
+  render: ->
+    <span dir="auto" className="contents">{ @props.text }</span>
+
+ChatMessagePermalink = React.createClass
   mixins: [
     SetIntervalMixin
   ]
+
   getInitialState: ->
     timeAgo: @timeAgo()
-    isActive: false
-
-  permalinkClick: (e) ->
-    e.preventDefault()
+    
+  timeAgo: ->
+    moment(@props.sentAt).fromNow()
 
   updateTimeAgo: ->
     @setState timeAgo: @timeAgo()
 
-  generatePermalink: ->
-    link = "/messages/#{ @props.id }"
-    <time className="time"><a href={ link } onClick={ @permalinkClick } className="permalink">{ @state.timeAgo }</a></time> if @props.isLast or @state.isActive
+  componentDidMount: ->
+    @setInterval @updateTimeAgo, 10000
 
-  timeAgo: ->
-    moment(@props.sentAt).fromNow()
+  permalinkClick: (e) ->
+    e.preventDefault()
+    
+  render: ->
+    link = "/messages/#{ @props.id }"
+    if @props.isLast or @props.isActive
+      <time className="time"><a href={ link } onClick={ @permalinkClick } className="permalink">{ @state.timeAgo }</a></time>
+    else
+      <span />
+
+ChatMessage = React.createClass
+  getInitialState: ->
+    isActive: false
 
   setActive: ->
     @setState isActive: true
@@ -35,12 +51,14 @@ ChatMessage = React.createClass
     @setState isActive: not @state.isActive
 
   render: ->
-    <li className="chatmessage" onMouseLeave={ @setInactive } onDoubleClick={ @toggleActive }>
-      <span dir="auto" className="contents">{ @props.contents }</span>
-      { @generatePermalink() }
+    chatMessageClassName = "chatmessage"
+    chatMessageClassName += " temporary" if @props.isTemporaryId
+    chatMessageClassName += " highlighted" if @state.isActive
+
+    <li className={ chatMessageClassName } onMouseLeave={ @setInactive } onDoubleClick={ @toggleActive }>
+      <ChatMessageContents key="messageContents" text={ @props.contents } />
+      <ChatMessagePermalink key="permalink" isActive={ @state.isActive } sentAt={ @props.sentAt } isLast={ @props.isLast } id={ @props.id } />
     </li>
 
-  componentDidMount: ->
-    @setInterval @updateTimeAgo, 10000
 
 module.exports = ChatMessage

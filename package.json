@@ -14,9 +14,12 @@
     "config": {
       "buildExternals": [
         "react",
+        "react/addons",
         "lodash",
         "moment",
-        "jquery"
+        "jquery",
+        "socket.io-client",
+        "node-uuid"
       ],
       "transformToJsExtension": [
         "cjsx"
@@ -46,10 +49,12 @@
     "lodash": "^2.4.1",
     "moment": "^2.7.0",
     "mongoose": "^3.8.13",
+    "node-uuid": "^1.4.1",
     "promise": "^5.0.0",
     "react": "^0.11.0",
     "simpleplan": "^0.1.1",
     "socket.io": "^1.0.6",
+    "socket.io-client": "^1.0.6",
     "vinyl-source-stream": "^0.1.1",
     "watchify": "^0.10.2"
   },
