@@ -63,9 +63,8 @@ io.on('connection', function(socket) {
   socket.emit('welcome', socket.id);
 
   socket.on('room', function(room) {
-    socket.join(room.name);
     var socketFound = findClientsSocketByRoomId(room.name).filter(function(otherSocket) {
-      return otherSocket.macheteData && otherSocket.macheteData.user === room.user;
+      return otherSocket.macheteData && otherSocket.macheteData.user === socket.macheteData.user;
     })[0];
 
     if (!socketFound) {
@@ -74,6 +73,18 @@ io.on('connection', function(socket) {
         user: socket.macheteData.user
       });
     }
+
+    socket.join(room.name);
+    var randomUser = uuid.v1();
+    socket.emit('sendMessage', {
+      user: randomUser,
+      _id: randomUser,
+      sentAt: new Date(),
+      room: room,
+      contents: "welcome to the room `" + room.name + "`!",
+      isServerMessage: true,
+      realUser: socket.macheteData.user
+    })
   });
 
   socket.on('listUsers', function(listUsers) {
