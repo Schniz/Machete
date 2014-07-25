@@ -15,7 +15,7 @@ MessagesBySender = React.createClass
       bottom: 0
   
   messageContainer: (message, index) ->
-    <ChatMessage isTemporaryId={ message.isTemporaryId } key={ message.sentAt.getTime() } contents={ message.contents } id={ message._id } sentAt={ message.sentAt } isLast={ index + 1 is @props.messages.length } />
+    <ChatMessage isServerMessage={ message.isServerMessage } isTemporaryId={ message.isTemporaryId } key={ message.sentAt.getTime() } contents={ message.contents } id={ message._id } sentAt={ message.sentAt } isLast={ index + 1 is @props.messages.length } />
 
   # componentWillUpdate: (prevProps, prevState) ->()
   #   node = @getDOMNode
@@ -46,7 +46,10 @@ MessagesBySender = React.createClass
         bottom: top + node.clientHeight
   
   render: ->
-    <li ref="root" className="messages-by-sender">
+    className = "messages-by-sender"
+    className += " server-user" if @props.isServerUser
+
+    <li ref="root" className={ className }>
       <ChatMessageProfilePic nickname={ @props.user } />
       <div ref="messageContainer" className="messages-container">
         <span className="sender">{ @props.user }:</span>

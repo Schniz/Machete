@@ -39,13 +39,14 @@ module.exports = function(express, MessageModel, UserModel) {
   });
 
   api.get("/users/:nickname/picture", function(req, res, next) {
-    UserModel.findOne({ nickname: req.params.nickname }, function(err, user) {
+    var nickname = req.params.nickname;
+    UserModel.findOne({ nickname: nickname }, function(err, user) {
       if (err) next(err);
-      if (!user) return res.status(404).send("not found.");
+      if (!user && nickname !== 'joe') return res.status(404).send("not found.");
 
       console.warn("TODO: edit /users/:nickname/picture");
 
-      return res.redirect("/images/gal.jpg");
+      return res.redirect("/images/" + nickname + ".jpg");
     });
   });
 

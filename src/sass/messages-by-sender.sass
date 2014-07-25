@@ -8,6 +8,31 @@
   &.reached-bottom
     position: relative
 
+  &.server-user
+    padding: 0
+
+    .chatmessage-profile-pic
+      height: 2em
+      width: 5em
+      padding: 0 2em
+      margin: 0 1em
+      border-radius: 0
+      background-position: 50% 50%
+      background-color: rgba(0, 140, 60, 0.05)
+    
+    .sender
+      display: none
+
+    .messages-container
+      padding: 0
+
+    .time
+      display: none
+
+    .contents
+      padding: 0
+
+
 .messages-container
   display: block
   width: 100%
@@ -28,10 +53,12 @@
 
 .chatmessage-profile-pic
   height: 5em
+  width: 5em
   border-radius: 100%
-  border: 0.15em dashed rgba(0,0,0,0.2)
+  // border: 0.15em dashed rgba(0,0,0,0.2)
   padding: 0.15em
   margin: 1em
+  background-size: cover
 
 .sticky-chatmessage-header
   visibility: hidden

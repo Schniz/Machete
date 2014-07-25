@@ -12,6 +12,7 @@ ChatTab = React.createClass
     scrollTop: 0
 
   addMessage: (message) ->
+    console.log "adding message ", message
     @setState userMessages: @handleMessage(@state.userMessages, message)
     @scrollToBottom()
 
@@ -22,6 +23,8 @@ ChatTab = React.createClass
       sentAt: message.sentAt
       _id: message._id
       isTemporaryId: message.isTemporaryId
+    isServerMessage: message.isServerMessage
+    realUser: message.realUser
 
   changeMessageId: (opts) ->
     { from, to } = opts
@@ -65,6 +68,8 @@ ChatTab = React.createClass
         messages: [ messageContents.contents ]
         messageIds: [ messageContents.contents._id ]
         user: messageContents.user
+        isServerUser: messageContents.isServerMessage
+        realUser: messageContents.realUser
 
     userMessages
 
@@ -73,7 +78,8 @@ ChatTab = React.createClass
 
   generateUserMessages: (userMessages) ->
     userKey = "#{userMessages.user}@#{userMessages.messages[0].sentAt.getTime()}"
-    <MessagesBySender parentScrollTop={ @state.scrollTop } key={ userKey } user={ userMessages.user } messages={ userMessages.messages } />
+    user = if userMessages.realUser then userMessages.realUser else userMessages.user
+    <MessagesBySender isServerUser={ userMessages.isServerUser } parentScrollTop={ @state.scrollTop } key={ userKey } user={ user } messages={ userMessages.messages } />
 
   scrollToBottom: ->
     node = @getDOMNode()

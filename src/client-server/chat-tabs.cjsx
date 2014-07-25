@@ -5,7 +5,8 @@ ChatTab = require('./chat-tab.cjsx')
 
 ChatTabs = React.createClass
   getInitialState: ->
-    currentTab: 'main'
+    currentTab: @props.initialTab
+    tabs: [ @props.initialTab ]
 
   addMessageToTab: (opts)->
     { message, tab } = opts

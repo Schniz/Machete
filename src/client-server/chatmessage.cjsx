@@ -54,6 +54,7 @@ ChatMessage = React.createClass
     chatMessageClassName = "chatmessage"
     chatMessageClassName += " temporary" if @props.isTemporaryId
     chatMessageClassName += " highlighted" if @state.isActive
+    chatMessageClassName += " server-message" if @props.isServerMessage
 
     <li className={ chatMessageClassName } onMouseLeave={ @setInactive } onDoubleClick={ @toggleActive }>
       <ChatMessageContents key="messageContents" text={ @props.contents } />

@@ -7,8 +7,11 @@ ChatMessageProfilePic = React.createClass
     "/api/v1/users/#{ @props.nickname }/picture"
 
   render: ->
+    style =
+      backgroundImage: "url(#{ @picture() })"
+
     <div>
-      <img src={ @picture() } className="chatmessage-profile-pic" />
+      <div style={ style } className="chatmessage-profile-pic" />
     </div>
 
 module.exports = ChatMessageProfilePic
