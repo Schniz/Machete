@@ -84,7 +84,7 @@ io.on('connection', function(socket) {
       contents: "welcome to the room `" + room.name + "`!",
       isServerMessage: true,
       realUser: socket.macheteData.user
-    })
+    });
   });
 
   socket.on('listUsers', function(listUsers) {

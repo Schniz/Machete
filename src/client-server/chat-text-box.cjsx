@@ -3,11 +3,17 @@
 React = require('react/addons')
 $ = require('jquery');
 
+lineTrimmerHelper = require('./line-trimmer-helper.cjsx')
+
 ChatTextBox = React.createClass
   componentDidMount: ->
     $(@refs.textarea.getDOMNode()).expanding().focus()
 
-  onSubmit: -> @props.onSubmit @refs.textarea.getDOMNode().value
+  onSubmit: -> 
+    value = lineTrimmerHelper(@refs.textarea.getDOMNode().value)
+    console.log(value.length)
+    @props.onSubmit value if value isnt ""
+
   clear: -> $(@refs.textarea.getDOMNode()).val("").change()
 
   onKeyDown: (evnt) ->

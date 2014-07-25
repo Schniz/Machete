@@ -3,12 +3,13 @@
 React = require('react/addons')
 moment = require('moment')
 SetIntervalMixin = require('./set-interval-mixin.cjsx')
+lineTrimmerHelper = require('./line-trimmer-helper.cjsx')
 
 ChatMessageContents = React.createClass
   shouldComponentUpdate: -> no
 
   render: ->
-    <span dir="auto" className="contents">{ @props.text }</span>
+    <span dir="auto" className="contents">{ lineTrimmerHelper(@props.text) }</span>
 
 ChatMessagePermalink = React.createClass
   mixins: [
