@@ -11,7 +11,6 @@ ChatTextBox = React.createClass
 
   onSubmit: -> 
     value = lineTrimmerHelper(@refs.textarea.getDOMNode().value)
-    console.log(value.length)
     @props.onSubmit value if value isnt ""
 
   clear: -> $(@refs.textarea.getDOMNode()).val("").change()

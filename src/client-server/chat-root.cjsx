@@ -3,17 +3,25 @@
 React = require('react/addons')
 ChatTabs = require('./chat-tabs.cjsx')
 ChatTextBox = require('./chat-text-box.cjsx')
+UserList = require('./user-list.cjsx')
 io = require('socket.io-client')
 uuid = require('node-uuid')
 moment = require('moment')
+_ = require('lodash')
 
 ChatRoot = React.createClass
   getInitialState: ->
     token: 'watwat'
+    user: null
+    userList: []
 
   componentDidMount: ->
     @createSocket()
     @bindSocketEvents()
+    @getUserList()
+
+  getUserList: ->
+    @setState userList: @refs.chatTabs.getCurrentTab().getUserList()
 
   createSocket: ->
     @socket.disconnect() if @socket
@@ -25,12 +33,38 @@ ChatRoot = React.createClass
     @socket.on 'sendMessage', @onSendMessage
     @socket.on 'listUsers:response', @onListUsersResponse
     @socket.on 'welcome', @onWelcome
+    @socket.on 'disconnect', @onDisconnect
+
+  onDisconnect: ->
+    @sendDisconnectedMessage @state.user
+    @clearUserLists()
+
+  clearUserLists: ->
+    @refs.chatTabs.getTabs().forEach (tab) ->
+      tab.setUserList []
+    @getUserList()
+
+  sendDisconnectedMessage: (user) ->
+    fakeUser = uuid.v1()
+    @sendToAllTabs
+      _id: "joe@#{ fakeUser }"
+      sentAt: new Date()
+      contents: "you just disconnected from server."
+      user: fakeUser
+      realUser: user
+      isServerMessage: true
+
+  sendToAllTabs: (message) ->
+    @refs.chatTabs.getTabNames().forEach (tabName) =>
+      @onSendMessage _.extend(message, room: tabName)
 
   onListUsersResponse: (res) ->
-    console.log "listUsers:response", res
+    @refs.chatTabs.getTab(res.room).setUserList res.userList
+    @getUserList()
 
-  onWelcome: (socketId) ->
-    console.log "connected with id #{socketId}"
+  onWelcome: (welcome) ->
+    console.log "connected with id #{welcome.id}"
+    @setState user: welcome.user
     @refs.chatTabs.state.tabs.forEach (room) =>
       @socket.emit "room", 
         name: room
@@ -84,7 +118,10 @@ ChatRoot = React.createClass
 
   render: ->
     <div className="chat-root">
-      <ChatTabs initialTab="main" ref="chatTabs" tabs={@props.tabs} />
+      <div className="chat-holder">
+        <UserList users={ @state.userList } key="userList" ref="userList" />
+        <ChatTabs initialTab="main" ref="chatTabs" tabs={@props.tabs} />
+      </div>
       <ChatTextBox ref="textBox" onSubmit={@sendToCurrentChatTab} />
     </div>
 

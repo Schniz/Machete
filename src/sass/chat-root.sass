@@ -4,10 +4,14 @@
   height: 100%
   width: 100%
 
-.chat-tabs
-  flex: 1
+.chat-holder
   height: 100%
+  flex: 1
+  display: flex
+
+.chat-tabs
   width: 100%
+  flex: 1
   display: flex
 
 .chat-text-box
@@ -25,11 +29,34 @@
     min-height: 1em
     height: 1.4em
     resize: none
-    max-height: 1.4em * 4;
+    max-height: 1.4em * 4
 
   .send-button
     border: 0
 
+.tab-messages
+  margin: 0
+  padding: 0
 
 .expanding-wrapper
   flex: 1
+
+.user-list
+  padding: 0.5em
+  display: flex
+  flex-direction: column
+  min-width: 11em
+
+.users
+  margin: 0.5em 0
+  padding: 0
+  flex: 1
+  overflow-y: scroll
+  list-style: none
+
+  .user
+    padding: 0.3em 0
+
+.user-list-header
+  font-weight: lighter
+  text-align: center

@@ -15,6 +15,19 @@ ChatTabs = React.createClass
   getTab: (tab) ->
     @refs.chatTab
 
+  getTabs: ->
+    @state.tabs.map (tab) =>
+      @getTab tab
+
+  getCurrentTab: ->
+    @getTab @state.currentTab
+
+  getTabNames: ->
+    @state.tabs
+
+  getCurrentTabName: ->
+    @state.currentTab
+
   updateTemporaryMessageOnTab: (opts)->
       { tab, oldId, newId, ok } = opts
       if ok

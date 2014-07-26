@@ -10,11 +10,12 @@ ChatTab = React.createClass
   getInitialState: ->
     userMessages: @messagesToUserMessages(@props.messages)
     scrollTop: 0
+    userList: []
 
   addMessage: (message) ->
     console.log "adding message ", message
     @setState userMessages: @handleMessage(@state.userMessages, message)
-    @scrollToBottom()
+    , => @scrollToBottom()
 
   extractMessage: (message) ->
     user: message.user
@@ -91,9 +92,17 @@ ChatTab = React.createClass
   onScroll: ->
     @setState scrollTop: @getDOMNode().scrollTop
 
+  getUserList: ->
+    @state.userList
+
+  setUserList: (userList) ->
+    @setState userList: userList
+
   render: ->
-    <ol ref="userMessagesList" className="chat-tab" onScroll={ @onScroll }>
-      { @state.userMessages.map(@generateUserMessages) }
-    </ol>
+    <div className="chat-tab">
+      <ol ref="userMessagesList" className="tab-messages" onScroll={ @onScroll }>
+        { @state.userMessages.map(@generateUserMessages) }
+      </ol>
+    </div>
 
 module.exports = ChatTab

@@ -41,38 +41,71 @@ var getUserFromToken = function(token) {
 
 io.use(function(socket, next) {
   socket.macheteData = socket.macheteData || {};
-  console.log(socket.request._query);
   if (!socket.request._query || !socket.request._query.accessToken) return next("no access token. please authenticate.");
 
   var accessToken = socket.request._query.accessToken;
-  log("accessToken: ", accessToken);
   var user = getUserFromToken(accessToken);
 
   if (!user) return next("authentication failed.");
 
   socket.macheteData.user = user;
   socket.macheteData.accessToken = accessToken;
-  console.log('connected');
 
   next();
 });
 
+var sendUpdateRoomToUsers = function(room) {
+  var userList = _(findClientsSocketByRoomId(room)).map(function(otherSocket) {
+    return otherSocket.macheteData.user;
+  }).unique().map(function(name) {
+    return { name: name }
+  }).value();
+
+  io.to(room).emit('listUsers:response', {
+    userList: userList,
+    room: room
+  });
+};
+
+var userAlreadyInRoom = function(socket, room) {
+  findClientsSocketByRoomId(room).filter(function(otherSocket) {
+    return otherSocket.macheteData && otherSocket.macheteData.user === socket.macheteData.user;
+  })[0];
+};
+
 io.on('connection', function(socket) {
   socket.macheteData = socket.macheteData || {};
 
-  socket.emit('welcome', socket.id);
+  socket.emit('welcome', {
+    socketId: socket.id,
+    user: socket.macheteData.user
+  });
+
+  socket.on('disconnect', function() {
+    socket.rooms.forEach(function(room) {
+      socket.leave(room);
+      sendUpdateRoomToUsers(room);
+
+      log(userAlreadyInRoom(socket, room));
+      if (!userAlreadyInRoom(socket, room)) {
+        var randomUser = uuid.v1();
+        io.to(room).emit('sendMessage', {
+          user: randomUser,
+          _id: randomUser,
+          sentAt: new Date(),
+          room: room,
+          contents: socket.macheteData.user + " just left the room.",
+          isServerMessage: true,
+          realUser: socket.macheteData.user
+        });
+      }
+    });
+
+    log(socket.macheteData.user + " has disconnected :( he left rooms: " + socket.rooms);
+  });
 
   socket.on('room', function(room) {
-    var socketFound = findClientsSocketByRoomId(room.name).filter(function(otherSocket) {
-      return otherSocket.macheteData && otherSocket.macheteData.user === socket.macheteData.user;
-    })[0];
-
-    if (!socketFound) {
-      tellRoomThatUserJoined({
-        room: room.name,
-        user: socket.macheteData.user
-      });
-    }
+    var socketFound = userAlreadyInRoom(socket, room.name);
 
     socket.join(room.name);
     var randomUser = uuid.v1();
@@ -85,13 +118,26 @@ io.on('connection', function(socket) {
       isServerMessage: true,
       realUser: socket.macheteData.user
     });
+
+    if (!socketFound) {
+      tellRoomThatUserJoined({
+        room: room.name,
+        user: socket.macheteData.user
+      });
+      sendUpdateRoomToUsers(room.name);
+    }
   });
 
-  socket.on('listUsers', function(listUsers) {
-    socket.emit('listUsers:response', findClientsSocketByRoomId(listUsers.room).map(function(otherSocket) {
-      return otherSocket.id
-    }));
-  });
+  // socket.on('listUsers', function(listUsers) {
+  //   var userList = _(findClientsSocketByRoomId(listUsers.room)).map(function(otherSocket) {
+  //     return { name: otherSocket.macheteData.user };
+  //   }).unique().value();
+
+  //   socket.emit('listUsers:response', {
+  //     userList: userList,
+  //     room: listUsers.room
+  //   });
+  // });
 
   socket.on('sendMessage', function(message) {
     var _id = Math.floor(Math.random() * 100000);
@@ -117,7 +163,6 @@ tellRoomThatUserJoined = function(opts) {
   var user = opts.user;
   var room = opts.room;
   var randomUser = uuid.v1();
-  log(opts);
 
   io.to(room).emit('sendMessage', {
     user: randomUser,
