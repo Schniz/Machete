@@ -4,7 +4,6 @@ React = require('react/addons')
 
 ChatMessageProfilePic = require('./chatmessage-profile-pic.cjsx')
 ChatMessage = require('./chatmessage.cjsx')
-StickyChatMessageHeader = require('./sticky-chatmessage-header.cjsx')
 
 MessagesBySender = React.createClass
   getInitialState: ->
