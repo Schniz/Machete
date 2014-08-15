@@ -3,6 +3,8 @@
 React = require('react')
 
 UserList = React.createClass
+  displayName: "UserList"
+  
   generateUserItem: (user) ->
     <li key={ user.name }>{ user.name }</li>
 

@@ -6,12 +6,16 @@ SetIntervalMixin = require('./set-interval-mixin.cjsx')
 lineTrimmerHelper = require('./line-trimmer-helper.cjsx')
 
 ChatMessageContents = React.createClass
+  displayName: "ChatMessageContents"
+  
   shouldComponentUpdate: -> no
 
   render: ->
     <span dir="auto" className="contents">{ lineTrimmerHelper(@props.text) }</span>
 
 ChatMessagePermalink = React.createClass
+  displayName: "ChatMessagePermalink"
+  
   mixins: [
     SetIntervalMixin
   ]
@@ -39,6 +43,8 @@ ChatMessagePermalink = React.createClass
       <span />
 
 ChatMessage = React.createClass
+  displayName: "ChatMessage"
+  
   getInitialState: ->
     isActive: false
 

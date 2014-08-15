@@ -6,6 +6,8 @@ ChatMessageProfilePic = require('./chatmessage-profile-pic.cjsx')
 ChatMessage = require('./chatmessage.cjsx')
 
 MessagesBySender = React.createClass
+  displayName: "MessagesBySender"
+  
   getInitialState: ->
     finishedSticking: false
     sticking: false

@@ -7,6 +7,8 @@ moment = require('moment')
 MessagesBySender = require('./messages-by-sender.cjsx')
 
 ChatTab = React.createClass
+  displayName: "ChatTab"
+  
   getInitialState: ->
     userMessages: @messagesToUserMessages(@props.messages)
     scrollTop: 0

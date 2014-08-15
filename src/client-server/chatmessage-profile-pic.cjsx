@@ -3,6 +3,8 @@
 React = require('react/addons')
 
 ChatMessageProfilePic = React.createClass
+  displayName: "ChatMessageProfilePic"
+  
   picture: ->
     "/api/v1/users/#{ @props.nickname }/picture"
 

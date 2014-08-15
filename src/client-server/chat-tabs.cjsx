@@ -4,6 +4,8 @@ React = require('react/addons')
 ChatTab = require('./chat-tab.cjsx')
 
 ChatTabs = React.createClass
+  displayName: "ChatTabs"
+  
   getInitialState: ->
     currentTab: @props.initialTab
     tabs: [ @props.initialTab ]

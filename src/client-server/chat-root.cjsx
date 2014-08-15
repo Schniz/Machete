@@ -10,6 +10,7 @@ moment = require('moment')
 _ = require('lodash')
 
 ChatRoot = React.createClass
+  displayName: "ChatRoot"
   getInitialState: ->
     token: 'watwat'
     user: null

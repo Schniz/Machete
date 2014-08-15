@@ -6,6 +6,8 @@ $ = require('jquery');
 lineTrimmerHelper = require('./line-trimmer-helper.cjsx')
 
 ChatTextBox = React.createClass
+  displayName: "ChatTextBox"
+  
   componentDidMount: ->
     $(@refs.textarea.getDOMNode()).expanding().focus()
 
