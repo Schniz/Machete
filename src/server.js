@@ -116,7 +116,7 @@ io.on('connection', function(socket) {
       room: room,
       contents: "welcome to the room `" + room.name + "`!",
       isServerMessage: true,
-      realUser: socket.macheteData.user
+      realUser: 'joe'
     });
 
     if (!socketFound) {

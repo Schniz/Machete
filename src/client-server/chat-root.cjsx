@@ -12,7 +12,7 @@ _ = require('lodash')
 ChatRoot = React.createClass
   displayName: "ChatRoot"
   getInitialState: ->
-    token: 'watwat'
+    token: prompt('enter token')
     user: null
     userList: []
 
@@ -90,9 +90,12 @@ ChatRoot = React.createClass
       isServerMessage: messageReceived.isServerMessage
       realUser: messageReceived.realUser
 
-    @refs.chatTabs.addMessageToTab
-      tab: messageReceived.room
-      message: message
+    console.log message.realUser, @state.user
+
+    if not message.realUser? or message.realUser isnt @state.user
+      @refs.chatTabs.addMessageToTab
+        tab: messageReceived.room
+        message: message
 
   sendToCurrentChatTab: (text, callback) ->
     tab = @refs.chatTabs.state.currentTab
@@ -111,7 +114,7 @@ ChatRoot = React.createClass
       message:
         _id: tempId
         contents: text
-        user: 'schniz'
+        user: @state.user
         sentAt: new Date()
         isTemporaryId: true
 
