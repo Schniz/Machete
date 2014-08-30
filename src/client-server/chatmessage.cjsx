@@ -2,13 +2,7 @@
 
 React = require('react/addons')
 moment = require('moment')
-gemoji = require('gemoji')
-_s = require('underscore.string')
 SetIntervalMixin = require('./set-interval-mixin.cjsx')
-lineTrimmerHelper = require('./line-trimmer-helper.cjsx')
-EmojiPicture = require('./emoji-picture.cjsx')
-Mention = require('./mention.cjsx')
-mentionsHelper = require('./mention-helper.js')
 ChatMessageContents = require('./chat-message-contents.cjsx')
 
 ChatMessagePermalink = React.createClass
