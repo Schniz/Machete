@@ -21,7 +21,8 @@
         "jquery",
         "socket.io-client",
         "node-uuid",
-        "gemoji"
+        "gemoji",
+        "underscore.string"
       ],
       "transformToJsExtension": [
         "cjsx"
@@ -60,6 +61,7 @@
     "simpleplan": "^0.1.1",
     "socket.io": "^1.0.6",
     "socket.io-client": "^1.0.6",
+    "underscore.string": "^2.3.3",
     "vinyl-source-stream": "^0.1.1",
     "watchify": "^0.10.2"
   },

@@ -3,6 +3,8 @@
 React = require('react')
 
 EmojiPicture = React.createClass
+  displayName: 'EmojiPicture'
+
   getDefaultProps: ->
     height: 20
     width: 20

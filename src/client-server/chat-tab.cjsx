@@ -15,7 +15,6 @@ ChatTab = React.createClass
     userList: []
 
   addMessage: (message) ->
-    console.log "adding message ", message
     @setState userMessages: @handleMessage(@state.userMessages, message)
     , => @scrollToBottom()
 
@@ -31,7 +30,6 @@ ChatTab = React.createClass
 
   changeMessageId: (opts) ->
     { from, to } = opts
-    console.log "changeing from #{from} to #{to}"
     newUserMessages = @state.userMessages.map (userMessages) ->
       indexOfMessageId = userMessages.messageIds.indexOf(from)
       if indexOfMessageId is -1
@@ -49,7 +47,6 @@ ChatTab = React.createClass
         userMessages
 
     @setState userMessages: newUserMessages
-    console.log newUserMessages
  
   errorOnMessage: (id) ->
     console.log "error on message #{id}"

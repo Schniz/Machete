@@ -90,8 +90,6 @@ ChatRoot = React.createClass
       isServerMessage: messageReceived.isServerMessage
       realUser: messageReceived.realUser
 
-    console.log message.realUser, @state.user
-
     if not message.realUser? or message.realUser isnt @state.user
       @refs.chatTabs.addMessageToTab
         tab: messageReceived.room

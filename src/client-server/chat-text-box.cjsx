@@ -50,7 +50,6 @@ ChatTextBox = React.createClass
 
   onKeyDown: (evnt) ->
     if (evnt.key is 'Enter' and not evnt.shiftKey and not @justClosedAtWhoWindow())
-      console.log @state.shownAtWho
       evnt.stopPropagation()
       evnt.preventDefault()
       @onSubmit()
