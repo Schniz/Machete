@@ -59,18 +59,18 @@ ChatMessageContents = React.createClass
       mentionedArray
     , []
 
-  createTextReactComponent: (contents) ->
-    contents
+  createTextReactComponent: (contents, index) ->
+    <span key="text-#{index}">{ contents }</span>
 
-  createEmojiReactComponent: (contents) ->
-    <EmojiPicture name={contents} />
+  createEmojiReactComponent: (contents, index) ->
+    <EmojiPicture name={contents} key="emoji-#{index}" />
 
-  createMentionReactComponent: (contents) ->
-    <Mention name={ contents } />
+  createMentionReactComponent: (contents, index) ->
+    <Mention name={ contents } key="mention-#{index}" />
 
   arrayOfTypesToReactComponents: (arrayOfTypes) ->
-    arrayOfTypes.map (value) =>
-      @["create#{_s.capitalize(value.type)}ReactComponent"] value.contents
+    arrayOfTypes.map (value, index) =>
+      @["create#{_s.capitalize(value.type)}ReactComponent"] value.contents, index
 
   renderText: ->
     text = lineTrimmerHelper(@props.text)
