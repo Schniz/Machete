@@ -1,3 +1,4 @@
+
 Machete ![Travis CI](https://travis-ci.org/Schniz/Machete.svg)
 =======
 
@@ -10,6 +11,18 @@ Screenshot
 ![Machete.](http://f.cl.ly/items/1R0n0G243B0s1J0m3A3O/Image%202014-07-26%20at%204.09.01%20PM.png)
 
 But as you know, it may have been updated since the last commits. yeah.
+
+Installation
+------------
+
+```bash
+git clone......
+npm install
+bower install
+gulp build
+echo "ARE YOU READY????????????"
+node .
+```
 
 React Hirarchy
 --------------

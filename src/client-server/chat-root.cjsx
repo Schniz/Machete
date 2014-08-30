@@ -126,7 +126,7 @@ ChatRoot = React.createClass
         <UserList users={ @state.userList } key="userList" ref="userList" />
         <ChatTabs initialTab="main" ref="chatTabs" tabs={@props.tabs} />
       </div>
-      <ChatTextBox ref="textBox" onSubmit={@sendToCurrentChatTab} />
+      <ChatTextBox userList={ @state.userList } ref="textBox" onSubmit={@sendToCurrentChatTab} />
     </div>
 
 module.exports = ChatRoot

@@ -19,7 +19,8 @@
         "moment",
         "jquery",
         "socket.io-client",
-        "node-uuid"
+        "node-uuid",
+        "gemoji"
       ],
       "transformToJsExtension": [
         "cjsx"
@@ -38,6 +39,7 @@
     "colors": "^0.6.2",
     "elmongo": "^0.1.7",
     "express": "^4.6.1",
+    "gemoji": "^0.1.0",
     "gulp": "^3.8.6",
     "gulp-autoprefixer": "0.0.8",
     "gulp-cjsx": "^0.2.0",

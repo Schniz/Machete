@@ -2,16 +2,35 @@
 
 React = require('react/addons')
 moment = require('moment')
+gemoji = require('gemoji')
 SetIntervalMixin = require('./set-interval-mixin.cjsx')
 lineTrimmerHelper = require('./line-trimmer-helper.cjsx')
+EmojiPicture = require('./emoji-picture.cjsx')
 
 ChatMessageContents = React.createClass
   displayName: "ChatMessageContents"
-  
+
+  statics:
+    emojiRegex: (->
+      new RegExp("(:(?:#{Object.keys(gemoji.name).join('|')}):)", "g")
+    )()
+
   shouldComponentUpdate: -> no
 
+  renderEmoji: (text) ->
+    splittedText = text.split(ChatMessageContents.emojiRegex)
+    emojis = splittedText.map (word, index) ->
+      if not ChatMessageContents.emojiRegex.test(word)
+        <span key={ "text-#{index}" }>{ word }</span>
+      else
+        <EmojiPicture key={ "emoji-#{index}" } name={ word.match(/:(.+):/)[1] } />
+
+  renderText: ->
+    text = lineTrimmerHelper(@props.text)
+    text = @renderEmoji(text)
+
   render: ->
-    <span dir="auto" className="contents">{ lineTrimmerHelper(@props.text) }</span>
+    <span dir="auto" ref="text" className="contents">{ @renderText() }</span>
 
 ChatMessagePermalink = React.createClass
   displayName: "ChatMessagePermalink"

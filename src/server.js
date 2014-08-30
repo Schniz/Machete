@@ -175,15 +175,13 @@ tellRoomThatUserJoined = function(opts) {
   });
 };
 
-function findClientsSocketByRoomId(roomId) {
-  var res = []
-    , room = io.sockets.adapter.rooms[roomId];
-  if (room) {
-      for (var id in room) {
-      res.push(io.sockets.adapter.nsp.connected[id]);
-      }
-  }
-  return res;
+findClientsSocketByRoomId = function(roomId) {
+  var room = io.sockets.adapter.rooms[roomId] || {};
+
+  return Object.keys(room).reduce(function(roomUsers, userId) {
+    roomUsers.push(io.sockets.adapter.nsp.connected[userId]);
+    return roomUsers;
+  }, []);
 }
 
 http.start = function(mongoUrl) {
