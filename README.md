@@ -14,12 +14,11 @@ But as you know, it may have been updated since the last commits. yeah.
 
 Installation
 ------------
+assuming you have [`gulp`](http://gulpjs.com/) installed.. (`npm install -g gulp`)
 
 ```bash
 git clone......
-npm install
-bower install
-gulp build
+gulp install
 echo "ARE YOU READY????????????"
 node .
 ```
