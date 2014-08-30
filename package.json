@@ -9,7 +9,8 @@
   "gulp": {
     "tasks": [
       "build",
-      "watch"
+      "watch",
+      "install"
     ],
     "config": {
       "buildExternals": [
@@ -47,6 +48,7 @@
     "gulp-notify": "^1.4.0",
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^0.7.2",
+    "gulp-shell": "^0.2.9",
     "gulp-util": "^3.0.0",
     "jquery": "^2.1.1",
     "lodash": "^2.4.1",
